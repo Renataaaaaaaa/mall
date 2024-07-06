@@ -77,17 +77,30 @@ public class UmsResourceController {
         }
     }
 
+//    @ApiOperation("分页模糊查询后台资源")
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public CommonResult<CommonPage<UmsResource>> list(@RequestParam(required = false) Long categoryId,
+//                                                      @RequestParam(required = false) String nameKeyword,
+//                                                      @RequestParam(required = false) String urlKeyword,
+//                                                      @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+//                                                      @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+//        List<UmsResource> resourceList = resourceService.list(categoryId,nameKeyword, urlKeyword, pageSize, pageNum);
+//        return CommonResult.success(CommonPage.restPage(resourceList));
+//    }
+
     @ApiOperation("分页模糊查询后台资源")
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "list", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<CommonPage<UmsResource>> list(@RequestParam(required = false) Long categoryId,
-                                                      @RequestParam(required = false) String nameKeyword,
-                                                      @RequestParam(required = false) String urlKeyword,
-                                                      @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
-                                                      @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<UmsResource> resourceList = resourceService.list(categoryId,nameKeyword, urlKeyword, pageSize, pageNum);
+                             @RequestParam(required = false) String resourceName,
+                             @RequestParam(required = false) String resourceUrl,
+                             @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                             @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum){
+        List<UmsResource> resourceList = resourceService.list(categoryId, resourceName, resourceUrl, pageSize, pageNum);
         return CommonResult.success(CommonPage.restPage(resourceList));
     }
+
 
     @ApiOperation("查询所有后台资源")
     @RequestMapping(value = "/listAll", method = RequestMethod.GET)

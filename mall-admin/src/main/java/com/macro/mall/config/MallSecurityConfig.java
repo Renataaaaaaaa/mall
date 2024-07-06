@@ -29,11 +29,14 @@ public class MallSecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         //获取登录用户信息
+        //返回的是接口的一个实现类，并且UserDetailsService接口只有一个函数，利用lambda表达式直接代表接口的一个实现类
+        //之后spring中的security就可以用这个接口中的这个函数获取adminuserdetail了
         return username -> adminService.loadUserByUsername(username);
     }
 
     @Bean
     public DynamicSecurityService dynamicSecurityService() {
+        //全部资源
         return new DynamicSecurityService() {
             @Override
             public Map<String, ConfigAttribute> loadDataSource() {

@@ -49,21 +49,41 @@ public class UmsResourceServiceImpl implements UmsResourceService {
         return count;
     }
 
+//    @Override
+//    public List<UmsResource> list(Long categoryId, String nameKeyword, String urlKeyword, Integer pageSize, Integer pageNum) {
+//        PageHelper.startPage(pageNum,pageSize);
+//        UmsResourceExample example = new UmsResourceExample();
+//        UmsResourceExample.Criteria criteria = example.createCriteria();
+//        if(categoryId!=null){
+//            criteria.andCategoryIdEqualTo(categoryId);
+//        }
+//        if(StrUtil.isNotEmpty(nameKeyword)){
+//            criteria.andNameLike('%'+nameKeyword+'%');
+//        }
+//        if(StrUtil.isNotEmpty(urlKeyword)){
+//            criteria.andUrlLike('%'+urlKeyword+'%');
+//        }
+//        return resourceMapper.selectByExample(example);
+//    }
+
     @Override
-    public List<UmsResource> list(Long categoryId, String nameKeyword, String urlKeyword, Integer pageSize, Integer pageNum) {
+    public List<UmsResource> list(Long catgoryId, String resourceName, String resourceUrl, Integer pageSize, Integer pageNum){
+        // 设置这句话之后 db就会查询对应的数据
         PageHelper.startPage(pageNum,pageSize);
+
         UmsResourceExample example = new UmsResourceExample();
         UmsResourceExample.Criteria criteria = example.createCriteria();
-        if(categoryId!=null){
-            criteria.andCategoryIdEqualTo(categoryId);
+        if (catgoryId != null){
+            criteria.andCategoryIdEqualTo(catgoryId);
         }
-        if(StrUtil.isNotEmpty(nameKeyword)){
-            criteria.andNameLike('%'+nameKeyword+'%');
+        if (StrUtil.isNotEmpty(resourceName)){
+            criteria.andNameEqualTo("%" + resourceName + "%");
         }
-        if(StrUtil.isNotEmpty(urlKeyword)){
-            criteria.andUrlLike('%'+urlKeyword+'%');
+        if (StrUtil.isNotEmpty(resourceUrl)){
+            criteria.andUrlEqualTo("%" + resourceUrl + "%");
         }
         return resourceMapper.selectByExample(example);
+
     }
 
     @Override

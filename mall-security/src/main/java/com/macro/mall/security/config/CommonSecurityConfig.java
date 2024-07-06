@@ -46,6 +46,7 @@ public class CommonSecurityConfig {
         return new JwtAuthenticationTokenFilter();
     }
 
+    //当没有dynamicSecurityService实现类的时候，就不会创建相关对象
     @ConditionalOnBean(name = "dynamicSecurityService")
     @Bean
     public DynamicAccessDecisionManager dynamicAccessDecisionManager() {

@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.macro.mall.bo.AdminUserDetails;
+import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.common.exception.Asserts;
 import com.macro.mall.common.util.RequestUtil;
 import com.macro.mall.dao.UmsAdminRoleRelationDao;
@@ -76,21 +77,24 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
-    public UmsAdmin register(UmsAdminParam umsAdminParam) {
+    public UmsAdmin register(UmsAdminParam umsAdminParam){
         UmsAdmin umsAdmin = new UmsAdmin();
         BeanUtils.copyProperties(umsAdminParam, umsAdmin);
         umsAdmin.setCreateTime(new Date());
         umsAdmin.setStatus(1);
-        //查询是否有相同用户名的用户
+        //查询重名
         UmsAdminExample example = new UmsAdminExample();
-        example.createCriteria().andUsernameEqualTo(umsAdmin.getUsername());
-        List<UmsAdmin> umsAdminList = adminMapper.selectByExample(example);
-        if (umsAdminList.size() > 0) {
+        example.createCriteria().andUsernameEqualTo(umsAdminParam.getUsername());
+        List<UmsAdmin> repeatedNameAdmin= adminMapper.selectByExample(example);
+        if (!repeatedNameAdmin.isEmpty()){
             return null;
         }
-        //将密码进行加密操作
-        String encodePassword = passwordEncoder.encode(umsAdmin.getPassword());
-        umsAdmin.setPassword(encodePassword);
+        //密码长度校验
+        if (umsAdminParam.getPassword().length() < 8){
+            return null;
+        }
+        //密码加密
+        umsAdmin.setPassword(passwordEncoder.encode(umsAdminParam.getPassword()));
         adminMapper.insert(umsAdmin);
         return umsAdmin;
     }
@@ -264,6 +268,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     @Override
     public UserDetails loadUserByUsername(String username){
         //获取用户信息
+        //被MallSecurityConfig的userDetailsService调用，传入一个username返回一个UserDetails
         UmsAdmin admin = getAdminByUsername(username);
         if (admin != null) {
             List<UmsResource> resourceList = getResourceList(admin.getId());

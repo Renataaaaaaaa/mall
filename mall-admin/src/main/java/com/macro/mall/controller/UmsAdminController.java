@@ -13,6 +13,7 @@ import com.macro.mall.service.UmsRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -44,17 +45,30 @@ public class UmsAdminController {
     @Autowired
     private UmsRoleService roleService;
 
+//    @ApiOperation(value = "用户注册")
+//    @RequestMapping(value = "/register", method = RequestMethod.POST)
+//    @ResponseBody
+//    public CommonResult<UmsAdmin> register(@Validated @RequestBody UmsAdminParam umsAdminParam) {
+//        UmsAdmin umsAdmin = adminService.register(umsAdminParam);
+//        if (umsAdmin == null) {
+//            return CommonResult.failed();
+//        }
+//        return CommonResult.success(umsAdmin);
+//    }
+
+
+
+
     @ApiOperation(value = "用户注册")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult<UmsAdmin> register(@Validated @RequestBody UmsAdminParam umsAdminParam) {
-        UmsAdmin umsAdmin = adminService.register(umsAdminParam);
-        if (umsAdmin == null) {
-            return CommonResult.failed();
+    public CommonResult register(@Validated @RequestBody UmsAdminParam umsAdminLoginParam){
+        UmsAdmin umsAdmin = adminService.register(umsAdminLoginParam);
+        if (umsAdmin == null){
+            return CommonResult.failed("创建失败");
         }
         return CommonResult.success(umsAdmin);
     }
-
     @ApiOperation(value = "登录以后返回token")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
@@ -109,6 +123,7 @@ public class UmsAdminController {
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult logout(Principal principal) {
+        //Principal 当前登录的用户
         adminService.logout(principal.getName());
         return CommonResult.success(null);
     }
