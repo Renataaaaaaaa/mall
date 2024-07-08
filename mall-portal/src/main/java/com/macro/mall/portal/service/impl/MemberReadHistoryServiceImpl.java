@@ -54,6 +54,7 @@ public class MemberReadHistoryServiceImpl implements MemberReadHistoryService {
             memberReadHistory.setProductPrice(product.getPrice() + "");
             memberReadHistory.setProductPic(product.getPic());
         }
+        memberReadHistoryRepository.deleteAllByMemberIdAndProductId(memberReadHistory.getMemberId(), memberReadHistory.getProductId());
         memberReadHistoryRepository.save(memberReadHistory);
         return 1;
     }

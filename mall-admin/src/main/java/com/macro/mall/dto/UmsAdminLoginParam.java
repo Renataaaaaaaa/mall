@@ -19,4 +19,8 @@ public class UmsAdminLoginParam {
     @NotEmpty
     @ApiModelProperty(value = "密码",required = true)
     private String password;
+
+//    @NotEmpty
+//    @ApiModelProperty(value = "记住我",required = true)
+//    private String rememberme;
 }

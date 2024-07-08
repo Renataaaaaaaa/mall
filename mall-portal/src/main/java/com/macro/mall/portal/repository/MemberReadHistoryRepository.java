@@ -19,4 +19,6 @@ public interface MemberReadHistoryRepository extends MongoRepository<MemberReadH
      * 根据会员ID删除记录
      */
     void deleteAllByMemberId(Long memberId);
+
+    void deleteAllByMemberIdAndProductId(Long memberId, Long ProductId);
 }

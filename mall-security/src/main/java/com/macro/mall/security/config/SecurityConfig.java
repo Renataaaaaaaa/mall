@@ -9,9 +9,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 
 /**
@@ -35,6 +42,19 @@ public class SecurityConfig {
     @Autowired(required = false)
     private DynamicSecurityFilter dynamicSecurityFilter;
 
+//    @Autowired
+//    private DataSource dataSource;  // 自动配置的数据源
+//
+//    @Autowired
+//    private UserDetailsService userDetailsService;
+//
+//    @Bean
+//    public PersistentTokenRepository persistentTokenRepository() {
+//        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+//        tokenRepository.setDataSource(dataSource);
+////        tokenRepository.setCreateTableOnStartup(true);
+//        return tokenRepository;
+//    }
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = httpSecurity
@@ -57,6 +77,15 @@ public class SecurityConfig {
                 .disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                //remember me
+//                .and().rememberMe()
+//                .key("zhazha")
+//                .alwaysRemember(true)
+//                .useSecureCookie(true)
+//                .rememberMeParameter("rememberme")
+//                .userDetailsService(userDetailsService)
+//                .tokenRepository(persistentTokenRepository())
+//                .tokenValiditySeconds(86400)
                 // 自定义权限拒绝处理类
                 .and()
                 .exceptionHandling()

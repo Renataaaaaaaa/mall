@@ -45,20 +45,6 @@ public class UmsAdminController {
     @Autowired
     private UmsRoleService roleService;
 
-//    @ApiOperation(value = "用户注册")
-//    @RequestMapping(value = "/register", method = RequestMethod.POST)
-//    @ResponseBody
-//    public CommonResult<UmsAdmin> register(@Validated @RequestBody UmsAdminParam umsAdminParam) {
-//        UmsAdmin umsAdmin = adminService.register(umsAdminParam);
-//        if (umsAdmin == null) {
-//            return CommonResult.failed();
-//        }
-//        return CommonResult.success(umsAdmin);
-//    }
-
-
-
-
     @ApiOperation(value = "用户注册")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
